@@ -1,14 +1,14 @@
 # Ryan Carroll
 while True:
     # Gets user input and strips white space
-    user_action = input("Type add, show, edit, or exit:")
+    user_action = input("Type add, show, edit, complete or exit:")
     user_action = user_action.strip()
 
     match user_action:
         case 'add':
             todo = input("Enter a todo: ") + "\n"
 
-            with open('todos.txt, 'r'') as file:
+            with open('todos.txt', 'r') as file:
                 todos = file.readlines()
 
             todos.append(todo)
@@ -28,11 +28,32 @@ while True:
         case 'edit':
             number = int(input("Number of the todo to edit: "))
             number = number - 1
+
+            with open('todos.txt', 'r') as file:
+                todos = file.readlines()
+
             new_todo = input("enter new todo: ")
-            todos[number] = new_todo
+            todos[number] = new_todo + "\n"
+
+            with open('todos.txt', 'w') as file:
+                file.writelines(todos)
+
         case 'complete':
-            number = int(input("Number of the todo to complete"))
-            todos.pop(number - 1)
+            number = int(input("Number of the todo to complete: "))
+
+            with open('todos.txt', 'r') as file:
+                todos = file.readlines()
+
+            index = number - 1
+            to_be_removed = todos[index].strip('\n')
+            todos.pop(index)
+
+            with open('todos.txt', 'w') as file:
+                file.writelines(todos)
+
+            message = f"{to_be_removed} was removed from the list."
+            print(message)
+
         case 'exit':
             break
 
